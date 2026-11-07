@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroVibe WebXR - Clinical Command Center</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Chart.js para gráfica biométrica -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Three.js para renderizado 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Socket.IO client -->
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <header class="hud-header">
+        <div class="brand">
+            <h1>NEUROVIBE <span class="highlight">WebXR Pro</span></h1>
+        </div>
+        <div class="system-status">
+            <span class="pulse-dot"></span>
+            <span id="status-text">SYSTEM ONLINE // TELEMETRY LINKED</span>
+        </div>
+    </header>
+
+    <main id="app-container">
+        <!-- Renderizado 3D de Entorno Virtual WebXR -->
+        <section class="card view-3d-card">
+            <div class="card-header">
+                <h3>ENTORNO VIRTUAL VESTIBULAR (3D WEBXR CORE)</h3>
+                <span class="badge">FPS: <span id="fps-counter">60</span></span>
+            </div>
+            
+            <!-- NUEVO: Selector de Modos de Terapia en el 3D -->
+            <div class="mode-selector-bar">
+                <label for="therapy-mode">MODO DE TERAPIA:</label>
+                <select id="therapy-mode" class="hud-select">
+                    <option value="suave">1. Reacondicionamiento Vestibular (Suave)</option>
+                    <option value="optocinetico">2. Estímulo Optocinético (Intenso)</option>
+                    <option value="propioceptivo">3. Calibración Propioceptiva (Interactivo)</option>
+                </select>
+            </div>
+
+            <div id="canvas-container"></div>
+            <div class="hud-overlay">
+                <div class="hud-stat">ESTADO PACIENTE: <span id="patient-status" class="status-ok">OPTIMO</span></div>
+            </div>
+        </section>
+
+        <!-- Panel Lateral de Telemetría Biométrica -->
+        <aside class="side-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h3>MÉTRICAS EN TIEMPO REAL</h3>
+                    <span id="time-val" class="time-badge">00:00:00</span>
+                </div>
+                
+                <div class="metric-block">
+                    <div class="metric-label">
+                        <span>ESTABILIDAD POSTURAL</span>
+                        <strong id="postural-val">0.00</strong>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="postural-bar" class="progress-bar-fill cyan-glow" style="width: 80%"></div>
+                    </div>
+                </div>
+
+                <div class="metric-block">
+                    <div class="metric-label">
+                        <span>CARGA COGNITIVA (EEG/GSR)</span>
+                        <strong id="cognitive-val">0%</strong>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="cognitive-bar" class="progress-bar-fill magenta-glow" style="width: 45%"></div>
+                    </div>
+                </div>
+
+                <div class="metric-block">
+                    <div class="metric-label">
+                        <span>INTENSIDAD HÁPTICA</span>
+                        <strong id="haptic-val">0%</strong>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="haptic-bar" class="progress-bar-fill yellow-glow" style="width: 30%"></div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="bioChart" height="110"></canvas>
+                </div>
+            </div>
+
+            <!-- SUITE DE SIMULACIÓN Y EXPORTACIÓN -->
+            <div class="card simulation-card">
+                <div class="card-header">
+                    <h3>CONSOLA DE CONTROL Y PRUEBAS</h3>
+                </div>
+                
+                <div class="control-group">
+                    <label for="stress-slider">Inducir Sobrecarga Cognitiva (Estrés):</label>
+                    <input type="range" id="stress-slider" min="0" max="100" value="30">
+                </div>
+
+                <div class="button-grid">
+                    <button id="haptic-trigger" class="btn btn-primary">⚡ DISPARAR PULSO HÁPTICO</button>
+                    <button id="fail-trigger" class="btn btn-danger">⚠ SIMULAR CRISIS VERTIGINOSA</button>
+                    <button id="report-trigger" class="btn btn-success">📥 EXPORTAR INFORME CLÍNICO (PDF)</button>
+                    <button id="reset-trigger" class="btn btn-secondary">🔄 RESTABLECER VALORES</button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
